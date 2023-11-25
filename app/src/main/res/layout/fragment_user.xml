@@ -4,13 +4,120 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.FragmentUser">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="fragment user"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*"
+        android:shrinkColumns="*"
+        android:padding="16dp">
+
+        <!-- Header Row -->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Cell with left and right borders -->
+            <EditText
+                android:id="@+id/section"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Section"
+                android:textStyle="bold"
+                android:background="@color/black"
+                android:textColor="@android:color/white"
+                android:layout_marginEnd="1dp"/>
+
+            <!-- Cell with right border -->
+            <EditText
+                android:id="@+id/colors"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Colors"
+                android:textStyle="bold"
+                android:background="@color/black"
+                android:textColor="@android:color/white"
+                android:layout_marginEnd="1dp"/>
+
+            <!-- Cell with right border -->
+            <EditText
+                android:id="@+id/disCount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Discount"
+                android:textStyle="bold"
+                android:background="@color/black"
+                android:textColor="@android:color/white"/>
+        </TableRow>
+
+        <!-- Row 1 -->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Cell with left and right borders -->
+<!--            <EditText-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_weight="1"-->
+<!--                android:gravity="center"-->
+<!--                android:text=""-->
+<!--                android:background="@drawable/stroke"-->
+<!--                android:layout_marginEnd="1dp"/>-->
+
+
+            <!-- Cell with right border -->
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text=""
+                android:background="@drawable/stroke"
+                android:layout_marginEnd="1dp"/>
+
+            <!-- Cell with right border -->
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text=""
+                android:background="@drawable/stroke"
+                android:layout_marginEnd="1dp"/>
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/stroke"
+                android:text="" />
+        </TableRow>
+
+        <!-- Row 2 with sample content -->
+    </TableLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:text="Rate"
+        android:textStyle="bold"
+        android:textSize="24dp"
+        android:layout_margin="20dp"
         />
+    </LinearLayout>
 
 </FrameLayout>
