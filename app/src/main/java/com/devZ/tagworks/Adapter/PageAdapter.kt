@@ -3,7 +3,7 @@ package com.devZ.tagworks.Adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.devZ.tagworks.fragments.AdminFragment
+import com.devZ.tagworks.Ui.AdminFragment
 import com.devZ.tagworks.fragments.FragmentUser
 
 class PageAdapter(fm:FragmentManager) : FragmentPagerAdapter(fm) {

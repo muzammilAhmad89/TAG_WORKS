@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.provider.SyncStateContract.Constants
 import com.devZ.tagworks.Models.ProductModel
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 class SharedPrefManager (context: Context) {
     private var constants = Constants()
@@ -15,23 +16,17 @@ class SharedPrefManager (context: Context) {
     fun clearSharedPref(){
         sharedPref.edit().clear().apply()
     }
-    fun putALsectiontList(list:List<ProductModel>): Boolean {
-        editor.putString("ListSection", Gson().toJson(list))
-        editor.commit()
-        return true
-    }  fun getALsectiontList(list:List<ProductModel>): Boolean {
-        editor.putString("ListStudents", Gson().toJson(list))
-        editor.commit()
+    fun putProductList(list: List<ProductModel>): Boolean {
+        editor.putString("ProductList", Gson().toJson(list))
+        editor.apply()
         return true
     }
-    fun putGlassList(list:List<ProductModel>): Boolean {
-        editor.putString("GlassList", Gson().toJson(list))
-        editor.commit()
-        return true
-    }
-    fun getGlassList(list:List<ProductModel>): Boolean {
-        editor.putString("GlassList", Gson().toJson(list))
-        editor.commit()
-        return true
+    fun getProductList(): MutableList<ProductModel> {
+        val json = sharedPref.getString("ProductList", "")
+        return if (json.isNullOrBlank()) {
+            mutableListOf()
+        } else {
+            Gson().fromJson(json, object : TypeToken<MutableList<ProductModel>>() {}.type)
+        }
     }
 }
