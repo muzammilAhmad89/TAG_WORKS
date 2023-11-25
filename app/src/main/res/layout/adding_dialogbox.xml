@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- res/layout/custom_dialog_layout.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter New Item"
+        android:textStyle="bold"
+        android:textSize="25dp"
+        android:layout_gravity="center"
+        />
+
+    <!-- res/layout/custom_dialog_layout.xml -->
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*"
+        android:shrinkColumns="*"
+        android:padding="16dp">
+
+        <!-- Header Row -->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Cell with left and right borders -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Section"
+                android:textStyle="bold"
+                android:background="@color/black"
+                android:textColor="@android:color/white"
+                android:layout_marginEnd="1dp"/>
+
+            <!-- Cell with right border -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Colors"
+                android:textStyle="bold"
+                android:background="@color/black"
+                android:textColor="@android:color/white"
+                android:layout_marginEnd="1dp"/>
+
+            <!-- Cell with right border -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Rate"
+                android:textStyle="bold"
+                android:background="@color/black"
+                android:textColor="@android:color/white"
+                android:layout_marginEnd="1dp"/>
+
+            <!-- Cell with right border -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Discount"
+                android:textStyle="bold"
+                android:background="@color/black"
+                android:textColor="@android:color/white"/>
+        </TableRow>
+
+        <!-- Row 1 -->
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Cell with left and right borders -->
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text=""
+                android:background="@drawable/stroke"
+                android:layout_marginEnd="1dp"/>
+
+
+            <!-- Cell with right border -->
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text=""
+                android:background="@drawable/stroke"
+                android:layout_marginEnd="1dp"/>
+
+            <!-- Cell with right border -->
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text=""
+                android:background="@drawable/stroke"
+                android:layout_marginEnd="1dp"/>
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/stroke"
+                android:text="" />
+        </TableRow>
+
+        <!-- Row 2 with sample content -->
+    </TableLayout>
+
+
+
+</LinearLayout>

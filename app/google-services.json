@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "119341530865",
+    "project_id": "tag-works-4aeaa",
+    "storage_bucket": "tag-works-4aeaa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:119341530865:android:8d16d5b8918f7135aa3350",
+        "android_client_info": {
+          "package_name": "com.devZ.tagworks"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxWIrU4OZYlrJXBGXQxBZTeMnTDfUwYKA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
