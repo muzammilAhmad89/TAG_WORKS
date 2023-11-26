@@ -53,66 +53,73 @@ class AdminFragment : Fragment() {
         val aluminium = dialogView.findViewById<TextView>(R.id.Admin)
         val glass = dialogView.findViewById<TextView>(R.id.customer)
 
-        val dialog = builder.create() // Move this line here
+        val dialog = builder.create()
 
         aluminium.setOnClickListener {
             showAddingDialog()
-            dialog.dismiss() // Dismiss the dialog when aluminium is clicked
+            dialog.dismiss()
         }
 
         glass.setOnClickListener {
             showAddingDialog()
-            dialog.dismiss() // Dismiss the dialog when glass is clicked
+            dialog.dismiss()
         }
 
-        dialog.show() // Move this line here
+        dialog.show()
     }
     private fun showAddingDialog() {
         val builder = AlertDialog.Builder(requireContext())
         val dialogView = layoutInflater.inflate(R.layout.adding_dialogbox, null)
         builder.setView(dialogView)
         val saveBtn = dialogView.findViewById<TextView>(R.id.savebtn)
-        val section = dialogView.findViewById<EditText>(R.id.section).text.toString()
-        val colors = dialogView.findViewById<EditText>(R.id.colors).text.toString()
-        val rate = dialogView.findViewById<EditText>(R.id.price).text.toString()
-        val maxDiscount = dialogView.findViewById<EditText>(R.id.maxDiscount).text.toString()
 
-// Create a ProductModel using the retrieved data
-        val product = ProductModel(
-            pID = "",
-            section = section,
-            color = colors,
-            rate = rate,
-            maxDiscount = maxDiscount,
-            ""
+        saveBtn.setOnClickListener {
+            val section = dialogView.findViewById<EditText>(R.id.Sections).text.toString()
+            val colors = dialogView.findViewById<EditText>(R.id.Colors).text.toString()
+            val rate = dialogView.findViewById<EditText>(R.id.Price).text.toString()
+            val maxDiscount = dialogView.findViewById<EditText>(R.id.maxDiscount).text.toString()
+            Toast.makeText(mContext, "dataaaa"+section, Toast.LENGTH_SHORT).show()
+
+            // Create a ProductModel using the retrieved data
+            val product = ProductModel(
+                pID = "",
+                section = section,
+                color = colors,
+                rate = rate,
+                maxDiscount = maxDiscount,
+                ""
             )
 
-        productList.add(product)
-        saveBtn.setOnClickListener {
-            saveProduct()
+            productList.add(product)
+
+            saveProduct() // Moved saveProduct() inside the setOnClickListener block
         }
 
         builder.setNegativeButton("", null)
         val dialog = builder.create()
         dialog.show()
     }
+
     private fun saveProduct() {
         utils.startLoadingAnimation()
 
         lifecycleScope.launch {
             try {
+              //  Toast.makeText(context, "debug", Toast.LENGTH_SHORT).show()
                 for (product in productList) {
-                     productVieModel.saveProductToFirebase(product)
+                    Toast.makeText(context, "hfhfhff                          "+productList.size, Toast.LENGTH_SHORT).show()
+                    productVieModel.saveProductToFirebase(product)
                 }
 
             } catch (e: Exception) {
-                    Toast.makeText(context, "Failed to save products: $e", Toast.LENGTH_SHORT).show()
-                }
-            }
+                Toast.makeText(context, "Failed to save products: $e", Toast.LENGTH_SHORT).show()
+            } finally {
                 utils.endLoadingAnimation()
-
+            }
         }
     }
+
+}
 //    private fun dismissDialog() {
 //        // Dismiss the dialog when called
 //        // Make sure to replace "dialog" with your actual dialog instance

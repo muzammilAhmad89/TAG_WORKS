@@ -7,4 +7,8 @@ data class ProductModel(
     val rate:String,
     val maxDiscount:String,
     val type:String,
-)
+) {
+    // Required no-argument constructor for Firestore deserialization
+    constructor() : this("", "", "", "", "", "")
+}
+

@@ -59,9 +59,8 @@ dependencies {
 
 
     //Coroutines LifeCycle Scopes
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.1'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.1'
-
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'
 
     // Lifecycle components
     implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
@@ -101,6 +100,7 @@ dependencies {
 
     implementation "androidx.core:core-ktx:1.12.0" // Use the latest version available
 
+    implementation 'com.google.firebase:firebase-firestore:23.0.3' // Use the latest version
 
     implementation("com.google.android.play:app-update-ktx:2.1.0")
 

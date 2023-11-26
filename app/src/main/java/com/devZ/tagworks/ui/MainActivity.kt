@@ -1,5 +1,6 @@
 package com.devZ.tagworks.ui
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.viewpager.widget.ViewPager
@@ -7,6 +8,7 @@ import com.devZ.tagworks.R
 import com.devZ.tagworks.databinding.ActivityMainBinding
 import com.devZ.tagworks.Adapter.PageAdapter
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.FirebaseApp
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -16,6 +18,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
+        FirebaseApp.initializeApp(this)
+
 
 
         val viewPager = findViewById<ViewPager>(R.id.viewPager)
