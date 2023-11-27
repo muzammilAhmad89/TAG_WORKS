@@ -7,17 +7,13 @@ class Constants {
 
 
 
-
-
-
-
     ////////////////////////FILEDS NAMES///////////////////////
     public var FIELD_SECTIONS="sections"
     public var FIELD_COLORS="colors"
     public var FIELD_RATE="rate"
     public var FIELD_DISCOUNT="discount"
     public var FIELD_TYPE="type"
-    public var FIELD_ID="ProductID"
+    public var FIELD_ID="pID"
 
 
 }

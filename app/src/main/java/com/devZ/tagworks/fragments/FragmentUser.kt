@@ -18,7 +18,7 @@ import com.devZ.tagworks.Utils
 import com.devZ.tagworks.databinding.FragmentUserBinding
 
 
-class FragmentUser : Fragment() {
+class FragmentUser : Fragment(),CustomerAdapter.ProductListener {
     private lateinit var binding: FragmentUserBinding
     private lateinit var utils: Utils
     private val productList = mutableListOf<ProductModel>()
@@ -38,18 +38,29 @@ class FragmentUser : Fragment() {
         mContext = requireContext()
         utils = Utils(mContext)
         sharedPrefManager = SharedPrefManager(requireContext())
+        utils.startLoadingAnimation()
         getAllProducts()
 
         return view
     }
     fun getAllProducts(){
-        productList.addAll(sharedPrefManager.getProductList())
-        Toast.makeText(mContext, ""+productList.size, Toast.LENGTH_SHORT).show()
-        recyclerView = binding.recyclerViewAminData
-        recyclerView.layoutManager = LinearLayoutManager(mContext)
-        customerAdapter = CustomerAdapter(mContext,productList
-        )
-        recyclerView.adapter=customerAdapter
+
+      //     utils.startLoadingAnimation()
+            productList.addAll(sharedPrefManager.getProductList())
+        // End loading animation
+        utils.endLoadingAnimation()
+            // Update RecyclerView
+            recyclerView = binding.recyclerViewAminData
+            recyclerView.layoutManager = LinearLayoutManager(mContext)
+            customerAdapter = CustomerAdapter(mContext, productList,this@FragmentUser)
+            recyclerView.adapter = customerAdapter
+
+
+        }
+
+    override fun onProductClicked(pID: String, productList: List<ProductModel>) {
+
     }
+
 
 }

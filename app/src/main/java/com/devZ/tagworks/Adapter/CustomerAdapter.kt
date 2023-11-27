@@ -12,7 +12,8 @@ import com.devZ.tagworks.R
 
 class CustomerAdapter(
     private val context: Context,
-    private var productList: List<ProductModel>
+    private var productList: List<ProductModel>,
+    private var productListener:ProductListener
 ) : RecyclerView.Adapter<CustomerAdapter.ViewHolder>() {
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val Section: TextView = itemView.findViewById(R.id.Psections)
@@ -36,5 +37,9 @@ class CustomerAdapter(
 
         holder.Section.text=products.section
         holder.Colors.text=products.color
+    }
+    interface ProductListener {
+        fun onProductClicked(pID:String, productList: List<ProductModel>)
+
     }
 }
