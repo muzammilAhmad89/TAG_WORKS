@@ -23,8 +23,7 @@
             android:layout_height="wrap_content">
 
             <!-- Cell with left and right borders -->
-            <EditText
-                android:id="@+id/section"
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -36,8 +35,7 @@
                 android:layout_marginEnd="1dp"/>
 
             <!-- Cell with right border -->
-            <EditText
-                android:id="@+id/colors"
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -49,8 +47,7 @@
                 android:layout_marginEnd="1dp"/>
 
             <!-- Cell with right border -->
-            <EditText
-                android:id="@+id/disCount"
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

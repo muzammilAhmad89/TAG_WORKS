@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.devZ.tagworks.Models.ProductModel
 import com.devZ.tagworks.R
@@ -18,7 +19,8 @@ class CustomerAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val Section: TextView = itemView.findViewById(R.id.Psections)
         val Colors: TextView = itemView.findViewById(R.id.Pcolors)
-        val Rate: TextView = itemView.findViewById(R.id.Rate)
+        val discount: TextView = itemView.findViewById(R.id.Pdiscount)
+        val card: CardView = itemView.findViewById(R.id.rateCard)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -37,9 +39,14 @@ class CustomerAdapter(
 
         holder.Section.text=products.section
         holder.Colors.text=products.color
+        holder.discount.text=products.maxDiscount
+
+        holder.card.setOnClickListener {
+            productListener.onProductClicked(products)
+        }
     }
     interface ProductListener {
-        fun onProductClicked(pID:String, productList: List<ProductModel>)
+        fun onProductClicked(productModel: ProductModel)
 
     }
 }
