@@ -78,20 +78,21 @@ class AdminFragment : Fragment() {
             val colors = dialogView.findViewById<EditText>(R.id.Colors).text.toString()
             val rate = dialogView.findViewById<EditText>(R.id.Price).text.toString()
             val maxDiscount = dialogView.findViewById<EditText>(R.id.maxDiscount).text.toString()
-            Toast.makeText(mContext, "dataaaa"+section, Toast.LENGTH_SHORT).show()
+            val series = dialogView.findViewById<EditText>(R.id.series).text.toString()
 
             // Create a ProductModel using the retrieved data
             val product = ProductModel(
-                pID = "",
+                pid = "",
                 section = section,
                 color = colors,
                 rate = rate,
                 maxDiscount = maxDiscount,
-                ""
-            )
+                "",
+                series =series
+
+                )
 
             productList.add(product)
-
             saveProduct() // Moved saveProduct() inside the setOnClickListener block
         }
 
@@ -107,9 +108,9 @@ class AdminFragment : Fragment() {
             try {
               //  Toast.makeText(context, "debug", Toast.LENGTH_SHORT).show()
                 for (product in productList) {
-                    Toast.makeText(context, "hfhfhff                          "+productList.size, Toast.LENGTH_SHORT).show()
                     productVieModel.saveProductToFirebase(product)
                 }
+                Toast.makeText(mContext, ""+productList.size, Toast.LENGTH_SHORT).show()
 
             } catch (e: Exception) {
                 Toast.makeText(context, "Failed to save products: $e", Toast.LENGTH_SHORT).show()

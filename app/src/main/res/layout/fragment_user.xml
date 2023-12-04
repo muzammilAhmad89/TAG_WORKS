@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.FragmentUser">
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -63,14 +64,17 @@
         <FrameLayout
             android:id="@+id/fragmentContainerAdmin"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
 
             >
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewAminData"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent"
+
+               />
+
 
 
         </FrameLayout>
@@ -84,5 +88,4 @@
 <!--        android:layout_margin="20dp"-->
 <!--        />-->
     </LinearLayout>
-
 </FrameLayout>

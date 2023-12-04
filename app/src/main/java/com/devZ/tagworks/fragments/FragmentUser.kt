@@ -27,6 +27,7 @@ class FragmentUser : Fragment(), CustomerAdapter.ProductListener {
 
 
     private val productList = mutableListOf<ProductModel>()
+    private var seriesList = mutableListOf<ProductModel>()
     private val productVieModel: ProductViewModel by viewModels()
     private lateinit var sharedPrefManager: SharedPrefManager
     private lateinit var mContext: Context
@@ -53,11 +54,21 @@ class FragmentUser : Fragment(), CustomerAdapter.ProductListener {
 
     fun getAllProducts() {
         productList.addAll(sharedPrefManager.getProductList())
-        utils.endLoadingAnimation()
+        Toast.makeText(mContext, ""+productList.size, Toast.LENGTH_SHORT).show()
+        val seriesList = sharedPrefManager.getSeriesNames()
+        Toast.makeText(mContext, ""+seriesList.size, Toast.LENGTH_SHORT).show()
+        val filteredProducts = productList.filter { product -> seriesList.contains(product.series) }
+        Toast.makeText(mContext, ""+filteredProducts.size, Toast.LENGTH_SHORT).show()
+
+
+
+
         recyclerView = binding.recyclerViewAminData
         recyclerView.layoutManager = LinearLayoutManager(mContext)
-        customerAdapter = CustomerAdapter(mContext, productList, this@FragmentUser)
+        customerAdapter = CustomerAdapter(mContext, filteredProducts, this@FragmentUser)
         recyclerView.adapter = customerAdapter
+        customerAdapter.updateSeriesPositions()
+        utils.endLoadingAnimation()
     }
 
     override fun onProductClicked(productModel: ProductModel) {

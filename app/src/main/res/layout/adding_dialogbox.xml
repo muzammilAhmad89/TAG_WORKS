@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- res/layout/custom_dialog_layout.xml -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -68,12 +67,21 @@
                 android:layout_marginEnd="1dp"/>
             <!-- Cell with right border -->
             <TextView
-
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Discount"
+                android:textStyle="bold"
+                android:background="@color/black"
+                android:textColor="@android:color/white"/>
+            <!-- Cell with right border -->
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Series"
                 android:textStyle="bold"
                 android:background="@color/black"
                 android:textColor="@android:color/white"/>
@@ -120,6 +128,14 @@
 
             <EditText
                 android:id="@+id/maxDiscount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:background="@drawable/stroke"
+                android:text="" />
+            <EditText
+                android:id="@+id/series"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

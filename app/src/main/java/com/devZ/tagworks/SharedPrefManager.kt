@@ -2,27 +2,44 @@ package com.devZ.tagworks
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.provider.SyncStateContract.Constants
+import android.widget.Toast
 import com.devZ.tagworks.Models.ProductModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class SharedPrefManager (context: Context) {
-    private var constants = Constants()
 
+class SharedPrefManager(context: Context) {
     private val sharedPref: SharedPreferences = context.getSharedPreferences("myAppPrefs", Context.MODE_PRIVATE)
     private val editor: SharedPreferences.Editor = sharedPref.edit()
 
-    fun clearSharedPref(){
+    fun clearSharedPref() {
         sharedPref.edit().clear().apply()
     }
-    fun putProductList(list: List<ProductModel>): Boolean {
-        editor.putString("ProductList", Gson().toJson(list))
-        editor.apply()
-        return true
+
+    fun putProductList(seriesName: String, productList: List<ProductModel>) {
+        clearSharedPref()
+        val gson = Gson()
+        val json = gson.toJson(productList)
+        sharedPref.edit().putString("productList", json).apply()
     }
+
+    fun putSeriesName(seriesName: String) {
+        val editor = sharedPref.edit()
+        editor.putString("series", seriesName)  // Corrected key to "series"
+        editor.apply()
+    }
+
+    fun getSeriesNames(): List<String> {
+        val json = sharedPref.getString("series", "")
+        return if (json.isNullOrBlank()) {
+            mutableListOf()
+        } else {
+            Gson().fromJson(json, object : TypeToken<List<String>>() {}.type)
+        }
+    }
+
     fun getProductList(): MutableList<ProductModel> {
-        val json = sharedPref.getString("ProductList", "")
+        val json = sharedPref.getString("productList", "")
         return if (json.isNullOrBlank()) {
             mutableListOf()
         } else {

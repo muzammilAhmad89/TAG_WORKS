@@ -13,7 +13,7 @@ android {
         minSdk 24
         targetSdk 34
         versionCode 1
-        versionName "1.0"
+        versionName "1.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -103,6 +103,4 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:23.0.3' // Use the latest version
 
     implementation("com.google.android.play:app-update-ktx:2.1.0")
-
-
 }
