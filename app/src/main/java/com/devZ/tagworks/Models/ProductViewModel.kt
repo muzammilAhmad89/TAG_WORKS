@@ -16,16 +16,7 @@ class ProductViewModel(context: Application) : AndroidViewModel(context) {
         repo.saveProduct(product)
     }
 
-    suspend fun getAllSeriesNames(): List<String> {
-        return repo.getAllSeriesNames()
+    suspend fun getProduct(): Task<QuerySnapshot>{
+        return repo.getproduct()
     }
-
-    suspend fun getProductsForSeries(seriesName: String): List<ProductModel> {
-        return repo.getProductsForSeries(seriesName)
-    }
-
-    // Uncomment this if you need to fetch all products (if this is your use case)
-    // suspend fun getAllProducts(): Task<QuerySnapshot> {
-    //     return repo.getAllProducts()
-    // }
 }

@@ -64,14 +64,14 @@
         <FrameLayout
             android:id="@+id/fragmentContainerAdmin"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
 
             >
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerViewAminData"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
 
                />
 

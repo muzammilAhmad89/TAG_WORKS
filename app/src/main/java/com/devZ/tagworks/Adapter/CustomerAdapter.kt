@@ -1,3 +1,4 @@
+// CustomerAdapter.kt
 package com.devZ.tagworks.Adapter
 
 import android.content.Context
@@ -13,18 +14,13 @@ import com.devZ.tagworks.R
 
 class CustomerAdapter(
     private val context: Context,
-    private var productList: List<ProductModel>,
+    private var seriesAndProducts: List<Any>,
     private var productListener: ProductListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val TYPE_SERIES = 1
-    private val TYPE_PRODUCT = 2
-
-    // Assuming productList is sorted by series
-    private val seriesPositions: MutableMap<String, Int> = mutableMapOf()
 
     inner class SeriesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val seriesName: TextView = itemView.findViewById(R.id.seriesName)
+        val seriesTextView: TextView = itemView.findViewById(R.id.seriesName)
     }
 
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -32,64 +28,52 @@ class CustomerAdapter(
         val colors: TextView = itemView.findViewById(R.id.Pcolors)
         val discount: TextView = itemView.findViewById(R.id.Pdiscount)
         val card: CardView = itemView.findViewById(R.id.rateCard)
-        val series: TextView = itemView.findViewById(R.id.seriesName)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
-            TYPE_SERIES -> SeriesViewHolder(inflater.inflate(R.layout.series_item, parent, false))
-            TYPE_PRODUCT -> ProductViewHolder(
-                inflater.inflate(
-                    R.layout.customer_item,
-                    parent,
-                    false
-                )
-            )
-
-            else -> throw IllegalArgumentException("Invalid view type")
+            R.layout.series_item -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.series_item, parent, false)
+                SeriesViewHolder(view)
+            }
+            R.layout.customer_item -> {
+                val view = LayoutInflater.from(parent.context).inflate(R.layout.customer_item, parent, false)
+                ProductViewHolder(view)
+            }
+            else -> throw IllegalArgumentException("Invalid viewType: $viewType")
         }
     }
 
     override fun getItemCount(): Int {
-        return productList.size
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return if (seriesPositions.containsKey(productList[position].series)) {
-            TYPE_SERIES
-        } else {
-            TYPE_PRODUCT
-        }
+        return seriesAndProducts.size
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val product = productList[position]
-
+        val item = seriesAndProducts[position]
+        Toast.makeText(context, ""+seriesAndProducts.size, Toast.LENGTH_SHORT).show()
         when (holder) {
             is SeriesViewHolder -> {
-                holder.seriesName.text = product.series
+                val seriesName = item as String
+                holder.seriesTextView.text = seriesName
             }
-
             is ProductViewHolder -> {
+                val product = item as ProductModel
                 holder.section.text = product.section
                 holder.colors.text = product.color
                 holder.discount.text = product.maxDiscount
-                holder.series.text = product.series
 
-                holder.card.setOnClickListener {
-                    productListener.onProductClicked(product)
-                }
+                // Set click listener for product item
+                holder.card.setOnClickListener { productListener.onProductClicked(product) }
             }
+            else -> throw IllegalArgumentException("Invalid ViewHolder type")
         }
     }
 
-    fun updateSeriesPositions() {
-        seriesPositions.clear()
-        for (i in productList.indices) {
-            if (!seriesPositions.containsKey(productList[i].series)) {
-                seriesPositions[productList[i].series] = i
-            }
+    override fun getItemViewType(position: Int): Int {
+        return when (seriesAndProducts[position]) {
+            is String -> R.layout.series_item
+            is ProductModel -> R.layout.customer_item
+            else -> throw IllegalArgumentException("Invalid item type")
         }
     }
 
@@ -97,22 +81,3 @@ class CustomerAdapter(
         fun onProductClicked(productModel: ProductModel)
     }
 }
-//
-//    Function to set
-//    data
-//    fun setData(products: List<ProductModel>) {
-//        productList = products
-//        notifyDataSetChanged()
-//        // Debug toast messages
-//        if (productList.isEmpty()) {
-//            Toast.makeText(context, "Adapter received an empty list", Toast.LENGTH_SHORT).show()
-//        } else {
-//            Toast.makeText(
-//                context,
-//                "Adapter received a list with size: ${productList.size}",
-//                Toast.LENGTH_SHORT
-//            ).show()
-//        }
-//    }
-//
-//}

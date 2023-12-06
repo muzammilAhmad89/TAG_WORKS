@@ -1,7 +1,9 @@
+// FragmentUser.kt
 package com.devZ.tagworks.fragments
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +12,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.devZ.tagworks.Adapter.CustomerAdapter
 import com.devZ.tagworks.Models.ProductModel
-import com.devZ.tagworks.Models.ProductViewModel
 import com.devZ.tagworks.R
 import com.devZ.tagworks.SharedPrefManager
 import com.devZ.tagworks.Utils
@@ -25,17 +25,13 @@ class FragmentUser : Fragment(), CustomerAdapter.ProductListener {
     private lateinit var binding: FragmentUserBinding
     private lateinit var utils: Utils
 
-
-    private val productList = mutableListOf<ProductModel>()
-    private var seriesList = mutableListOf<ProductModel>()
-    private val productVieModel: ProductViewModel by viewModels()
-    private lateinit var sharedPrefManager: SharedPrefManager
+    private lateinit var productList: List<ProductModel>
+    private lateinit var serisName: LinkedHashSet<String> // Declare serisName as LinkedHashSet
     private lateinit var mContext: Context
     private lateinit var recyclerView: RecyclerView
     private lateinit var customerAdapter: CustomerAdapter
-    private var AdminRate: Int = 0
+    private lateinit var sharedPrefManager: SharedPrefManager
     private lateinit var Rate: TextView
-    private val splashDelayMillis = 2000 // 2 seconds
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,28 +43,38 @@ class FragmentUser : Fragment(), CustomerAdapter.ProductListener {
         utils = Utils(mContext)
         sharedPrefManager = SharedPrefManager(requireContext())
         utils.startLoadingAnimation()
-        getAllProducts()
 
-        return view
-    }
-
-    fun getAllProducts() {
-        productList.addAll(sharedPrefManager.getProductList())
-        Toast.makeText(mContext, ""+productList.size, Toast.LENGTH_SHORT).show()
-        val seriesList = sharedPrefManager.getSeriesNames()
-        Toast.makeText(mContext, ""+seriesList.size, Toast.LENGTH_SHORT).show()
-        val filteredProducts = productList.filter { product -> seriesList.contains(product.series) }
-        Toast.makeText(mContext, ""+filteredProducts.size, Toast.LENGTH_SHORT).show()
-
-
-
+        // Retrieve data and prepare it for the adapter
+        productList = sharedPrefManager.getProductList()
+        serisName = sharedPrefManager.getSeriesNames().toSet().toCollection(LinkedHashSet())
+        Toast.makeText(mContext, "gettinglistseries"+serisName.size, Toast.LENGTH_SHORT).show()
 
         recyclerView = binding.recyclerViewAminData
         recyclerView.layoutManager = LinearLayoutManager(mContext)
-        customerAdapter = CustomerAdapter(mContext, filteredProducts, this@FragmentUser)
+        Toast.makeText(mContext, "product list"+productList.size, Toast.LENGTH_SHORT).show()
+
+        // Initialize an empty list to store series names and corresponding products
+        val seriesAndProducts = mutableListOf<Any>()
+
+        // Loop through each series name
+        for (seriesName in serisName) {
+            // Log the values for debugging
+            Log.d("SeriesComparison", "SeriesName: $seriesName")
+            val filteredProducts = productList.filter { it.series == seriesName }
+            Log.d("SeriesComparison", "FilteredProductsSize: ${filteredProducts.size}")
+
+            // Add series name followed by filtered products to the list
+            seriesAndProducts.add(seriesName)
+            seriesAndProducts.addAll(filteredProducts)
+        }
+
+        // Create and set the adapter with the updated data structure
+        customerAdapter = CustomerAdapter(mContext, seriesAndProducts, this@FragmentUser)
         recyclerView.adapter = customerAdapter
-        customerAdapter.updateSeriesPositions()
+
         utils.endLoadingAnimation()
+
+        return view
     }
 
     override fun onProductClicked(productModel: ProductModel) {
@@ -90,7 +96,8 @@ class FragmentUser : Fragment(), CustomerAdapter.ProductListener {
 
         sections.text = productModel.section
         colors.text = productModel.color
-        AdminRate = productModel.rate.toInt()
+
+        val adminRate = productModel.rate.toInt()
 
         val dialog = builder.create()
 
@@ -99,44 +106,20 @@ class FragmentUser : Fragment(), CustomerAdapter.ProductListener {
             val sizeText = sizeEditText.text.toString()
             val discountText = discountEditText.text.toString()
 
-            val sizeInt = if (sizeText.isNotEmpty()) {
-                try {
-                    sizeText.toInt()
-                } catch (e: NumberFormatException) {
-                    e.printStackTrace()
-                    0
-                }
-            } else {
-                0
-            }
+            val sizeInt = sizeText.toIntOrNull() ?: 0
+            val discountInt = discountText.toIntOrNull() ?: 0
 
-            val discountInt = if (discountText.isNotEmpty()) {
-                try {
-                    discountText.toInt()
-                } catch (e: NumberFormatException) {
-                    e.printStackTrace()
-                    0
-                }
-            } else {
-                0
-            }
-
-            calculatePrice(sizeInt, discountInt)
+            calculatePrice(adminRate, sizeInt, discountInt)
         }
 
         dialog.show()
     }
 
-    fun calculatePrice(size: Int, discount: Int) {
-
-        val adminRate = AdminRate.toDouble()
-        val ratePerInch = adminRate / 12.0
+    private fun calculatePrice(adminRate: Int, size: Int, discount: Int) {
+        val ratePerInch = adminRate.toDouble() / 12.0
         val initialPrice = ratePerInch * size
         val discountPrice = initialPrice * (discount.toDouble() / 100.0)
         val finalPrice = initialPrice - discountPrice
         Rate.text = finalPrice.toString()
-
-
-}
-
+    }
 }
