@@ -97,7 +97,7 @@ class FragmentUser : Fragment(), CustomerAdapter.ProductListener {
         sections.text = productModel.section
         colors.text = productModel.color
 
-        val adminRate = productModel.rate.toInt()
+        val adminRate = productModel.rate.toIntOrNull() ?: 0
 
         val dialog = builder.create()
 
