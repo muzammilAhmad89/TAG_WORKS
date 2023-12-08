@@ -23,34 +23,38 @@
                 <TextView
                         android:id="@+id/Psections"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="20dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text=""
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/montserrat_regular"
                         android:background="@drawable/stroke"
-                        android:layout_marginEnd="1dp"
                         android:editable="false"/>
 
                     <!-- Cell with right border -->
         <TextView
             android:id="@+id/Pcolors"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:layout_weight="1"
             android:gravity="center"
             android:text=""
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_regular"
             android:background="@drawable/stroke"
-            android:layout_marginEnd="1dp"
             android:editable="false"/>
 
         <TextView
             android:id="@+id/Pdiscount"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:layout_weight="1"
             android:gravity="center"
             android:background="@drawable/stroke"
             android:text=""
+            android:textColor="@color/black"
+            android:fontFamily="@font/montserrat_regular"
             android:editable="false"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>

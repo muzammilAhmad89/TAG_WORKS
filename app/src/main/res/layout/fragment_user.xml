@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.FragmentUser">
 
     <LinearLayout
@@ -11,54 +12,79 @@
         android:orientation="vertical"
         >
 
-    <TableLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:stretchColumns="*"
-        android:shrinkColumns="*">
-
-        <!-- Header Row -->
-        <TableRow
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"
+            android:layout_marginVertical="4dp"
+            android:shrinkColumns="*">
 
-            <!-- Cell with left and right borders -->
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Section"
-                android:textStyle="bold"
-                android:background="@color/black"
-                android:textColor="@android:color/white"
-                android:layout_marginEnd="1dp"/>
+            <!-- Header Row -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <!-- Cell with right border -->
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Colors"
-                android:textStyle="bold"
-                android:background="@color/black"
-                android:textColor="@android:color/white"
-                android:layout_marginEnd="1dp"/>
+                <!-- Cell with left and right borders -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="5dp"
+                    app:cardCornerRadius="10dp">
 
-            <!-- Cell with right border -->
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="Discount"
-                android:textStyle="bold"
-                android:background="@color/black"
-                android:textColor="@android:color/white"/>
-        </TableRow>
-    </TableLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="Section"
+                        android:textStyle="bold"
+                        android:background="#80A2EA"
+                        android:textColor="@color/white"/>
+
+                </androidx.cardview.widget.CardView>
+
+                <!-- Cell with right border -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="1dp"
+                    app:cardCornerRadius="10dp"
+                    >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="Colors"
+                        android:textStyle="bold"
+                        android:background="#80A2EA"
+                        android:textColor="@color/white"/>
+
+                </androidx.cardview.widget.CardView>
+
+                <!-- Cell with right border -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="5dp"
+                    app:cardCornerRadius="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="Discount"
+                        android:textStyle="bold"
+                        android:background="#80A2EA"
+                        android:textColor="@color/white"/>
+
+                </androidx.cardview.widget.CardView>
+
+            </TableRow>
+        </TableLayout>
+
 
 
         <FrameLayout

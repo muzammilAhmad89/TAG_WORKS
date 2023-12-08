@@ -1,5 +1,8 @@
 package com.devZ.tagworks.Adapter
 
+import android.graphics.Color
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -27,10 +30,17 @@ class PageAdapter(fm:FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getPageTitle(position: Int): CharSequence? {
         when(position) {
             0 -> {
-                return "Customers"
-            }
+                val spannable = SpannableString("Customers")
+                spannable.setSpan(ForegroundColorSpan(Color.WHITE), 0, spannable.length, 0)
+
+                return spannable            }
             1 -> {
-                return "Admin"
+
+                // Customize the title and text color for the second page (position 1)
+                val spannable = SpannableString("Admin")
+                spannable.setSpan(ForegroundColorSpan(Color.WHITE), 0, spannable.length, 0)
+
+                return spannable
             }
 
         }
