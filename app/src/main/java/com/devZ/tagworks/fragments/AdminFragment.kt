@@ -2,6 +2,7 @@ package com.devZ.tagworks.Ui
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +13,10 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.devZ.tagworks.Adapter.AdminAdapter
+import com.devZ.tagworks.Adapter.CustomerAdapter
 import com.devZ.tagworks.Models.ProductModel
 import com.devZ.tagworks.Models.ProductViewModel
 import com.devZ.tagworks.R
@@ -23,12 +28,14 @@ import kotlinx.coroutines.launch
 class AdminFragment : Fragment() {
     private lateinit var binding: FragmentAdminBinding
     private lateinit var utils: Utils
-    private val productList = mutableListOf<ProductModel>()
+    private var productList = mutableListOf<ProductModel>()
     private val productVieModel : ProductViewModel by viewModels()
     private lateinit var sharedPrefManager: SharedPrefManager
     private lateinit var mContext: Context
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adminAdapter: AdminAdapter
     private val splashDelayMillis = 2000 // 2 seconds
-
+    private lateinit var serisName: LinkedHashSet<String>
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,6 +49,35 @@ class AdminFragment : Fragment() {
         binding.fabAdd.setOnClickListener {
             showSelectngDialog()
         }
+        productList = sharedPrefManager.getProductList()
+        serisName = sharedPrefManager.getSeriesNames().toSet().toCollection(LinkedHashSet())
+        Toast.makeText(mContext, "gettinglistseries"+serisName.size, Toast.LENGTH_SHORT).show()
+
+        recyclerView = binding.recyclerViewAminData
+        recyclerView.layoutManager = LinearLayoutManager(mContext)
+        Toast.makeText(mContext, "product list"+productList.size, Toast.LENGTH_SHORT).show()
+
+        // Initialize an empty list to store series names and corresponding products
+        val seriesAndProducts = mutableListOf<Any>()
+
+        // Loop through each series name
+        for (seriesName in serisName) {
+            // Log the values for debugging
+            Log.d("SeriesComparison", "SeriesName: $seriesName")
+            val filteredProducts = productList.filter { it.series == seriesName }
+            Log.d("SeriesComparison", "FilteredProductsSize: ${filteredProducts.size}")
+
+            // Add series name followed by filtered products to the list
+            seriesAndProducts.add(seriesName)
+            seriesAndProducts.addAll(filteredProducts)
+        }
+
+        // Create and set the adapter with the updated data structure
+        adminAdapter = AdminAdapter(mContext, seriesAndProducts)
+        recyclerView.adapter = adminAdapter
+
+        utils.endLoadingAnimation()
+
         return view
     }
 
@@ -121,18 +157,3 @@ class AdminFragment : Fragment() {
     }
 
 }
-//    private fun dismissDialog() {
-//        // Dismiss the dialog when called
-//        // Make sure to replace "dialog" with your actual dialog instance
-//        val dialog = builder.create()
-//        dialog.dismiss()
-//    }
-
-//    private fun storeProductInSharedPreferences(product: ProductModel) {
-//        // Retrieve the existing list from SharedPreferences
-//        val productList = sharedPrefManager.getProductList()
-//        // Add the new product to the list
-//        productList.add(product)
-//        // Save the updated list back to SharedPreferences
-//        sharedPrefManager.putProductList(productList)
-//    }
