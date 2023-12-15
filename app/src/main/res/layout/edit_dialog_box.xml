@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Enter New Item"
+        android:text="Edit this item"
         android:fontFamily="@font/montserrat_extra_bold"
         android:textColor="@color/black"
         android:textSize="23dp"
@@ -28,7 +28,7 @@
 
         />
     <EditText
-        android:id="@+id/Sections"
+        android:id="@+id/eSection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -47,7 +47,7 @@
         android:layout_marginLeft="5dp"
         />
     <EditText
-        android:id="@+id/itemCode"
+        android:id="@+id/eItemCode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -55,24 +55,24 @@
         android:hint="e.g. AA23"
         />
 
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:gravity="center"-->
-<!--        android:text="Item Series"-->
-<!--        android:fontFamily="@font/montserrat_bold"-->
-<!--        android:textColor="@android:color/black"-->
-<!--        android:layout_marginVertical="5dp"-->
-<!--        android:layout_marginLeft="5dp"-->
-<!--        />-->
-<!--    <EditText-->
-<!--        android:id="@+id/itemSeries"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:gravity="center"-->
-<!--        android:text=""-->
-<!--        android:hint="e.g. 1.6mm"-->
-<!--        />-->
+    <!--    <TextView-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:gravity="center"-->
+    <!--        android:text="Item Series"-->
+    <!--        android:fontFamily="@font/montserrat_bold"-->
+    <!--        android:textColor="@android:color/black"-->
+    <!--        android:layout_marginVertical="5dp"-->
+    <!--        android:layout_marginLeft="5dp"-->
+    <!--        />-->
+    <!--    <EditText-->
+    <!--        android:id="@+id/itemSeries"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:gravity="center"-->
+    <!--        android:text=""-->
+    <!--        android:hint="e.g. 1.6mm"-->
+    <!--        />-->
 
 
 
@@ -90,19 +90,15 @@
         />
 
 
-    <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/spinner"
+    <EditText
+        android:id="@+id/eColor"
         android:layout_width="match_parent"
-        android:textAlignment="textStart"
-        android:backgroundTint="@color/black"
-        android:layout_height="35dp"
-        android:paddingLeft="10dp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text=""
+        android:hint="e.g. AA23"
         />
+
 
     <TextView
         android:layout_width="wrap_content"
@@ -117,7 +113,7 @@
 
         />
     <EditText
-        android:id="@+id/Price"
+        android:id="@+id/eRate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -137,7 +133,7 @@
 
         />
     <EditText
-        android:id="@+id/maxDiscount"
+        android:id="@+id/eDiscount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -148,10 +144,10 @@
 
 
     <Button
-        android:id="@+id/savebtn"
+        android:id="@+id/updateBtn"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Save"
+        android:text="Update"
         android:layout_margin="16dp"
         />
 

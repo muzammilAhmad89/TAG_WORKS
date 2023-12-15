@@ -13,6 +13,7 @@ import com.devZ.tagworks.R
 class AdminAdapter (
     private val context: Context,
     private var seriesAndProducts: List<Any>,
+    private var productEditListener: ProductEditListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
@@ -25,6 +26,7 @@ class AdminAdapter (
         val colors: TextView = itemView.findViewById(R.id.Acolors)
         val discount: TextView = itemView.findViewById(R.id.Adiscount)
         val rate: TextView = itemView.findViewById(R.id.Arate)
+        val card:CardView=itemView.findViewById(R.id.rateCard)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -58,7 +60,8 @@ class AdminAdapter (
                 holder.section.text = product.section
                 holder.colors.text = product.color
                 holder.discount.text = product.maxDiscount
-                holder.rate.text = product.maxDiscount
+                holder.rate.text = product.rate
+                holder.card.setOnClickListener { productEditListener.selectedItemToEdit(product) }
 
             }
             else -> throw IllegalArgumentException("Invalid ViewHolder type")
@@ -71,6 +74,10 @@ class AdminAdapter (
             is ProductModel -> R.layout.customer_item
             else -> throw IllegalArgumentException("Invalid item type")
         }
+    }
+
+    interface ProductEditListener {
+        fun selectedItemToEdit(productModel:ProductModel)
     }
 
 

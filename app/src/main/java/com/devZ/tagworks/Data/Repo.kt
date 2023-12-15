@@ -20,7 +20,6 @@ class Repo(val context: Context) {
         PRODUCT_COLLECTION.add(product)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Toast.makeText(context, "saved", Toast.LENGTH_SHORT).show()
                     val documentReference = task.result
                     if (documentReference != null) {
                         val documentID = documentReference.id
@@ -45,6 +44,9 @@ class Repo(val context: Context) {
             }
     }
 
+    fun updateProduct(product: ProductModel){
+        PRODUCT_COLLECTION.document(product.pid).set(product)
+    }
 
 
     suspend fun getproduct(): Task<QuerySnapshot> {

@@ -18,4 +18,21 @@ class Constants {
     public var FIELD_SEIES="SERIES"
 
 
+
+    ////////////////////COLORS////////////////////////////////////
+
+    public var DULL="Dull"
+    public var CH_RALL="CH/RALL"
+    public var SH_BR="SH/BR"
+    public var MULTI="MULTI"
+    public var WOOD="Wood"
+
+
+    ///////////////////////PRODUCT TYPES/////////////////////////
+
+    public var ALUMINIUM="Aluminium"
+    public var GLASS="Glass"
+
+
+
 }

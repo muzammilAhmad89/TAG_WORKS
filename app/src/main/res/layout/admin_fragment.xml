@@ -23,7 +23,7 @@
             <TextView
                 android:id="@+id/Asections"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text=""
@@ -35,7 +35,7 @@
             <TextView
                 android:id="@+id/Acolors"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text=""
@@ -46,7 +46,7 @@
             <TextView
                 android:id="@+id/Arate"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:background="@drawable/stroke"
@@ -55,7 +55,7 @@
             <TextView
                 android:id="@+id/Adiscount"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:background="@drawable/stroke"

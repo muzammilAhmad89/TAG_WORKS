@@ -15,17 +15,17 @@
         android:fontFamily="@font/montserrat_bold"
         />
 
-    <TextView
-        android:id="@+id/tcSection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:fontFamily="@font/montserrat_bold"
-        android:text="(Section)"
-        android:textColor="@android:color/darker_gray"
-        android:layout_alignParentRight="true"
+<!--    <TextView-->
+<!--        android:id="@+id/tcSection"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:fontFamily="@font/montserrat_bold"-->
+<!--        android:text="(Section)"-->
+<!--        android:textColor="@android:color/darker_gray"-->
+<!--        android:layout_alignParentRight="true"-->
 
-        />
+<!--        />-->
 
 
 </RelativeLayout>

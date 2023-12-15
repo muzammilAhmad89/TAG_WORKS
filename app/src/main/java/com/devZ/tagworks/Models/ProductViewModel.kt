@@ -19,4 +19,8 @@ class ProductViewModel(context: Application) : AndroidViewModel(context) {
     suspend fun getProduct(): Task<QuerySnapshot>{
         return repo.getproduct()
     }
+
+    suspend fun updateProduct(product: ProductModel){
+        return repo.updateProduct(product)
+    }
 }

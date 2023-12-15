@@ -47,7 +47,7 @@ class FragmentUser : Fragment(), CustomerAdapter.ProductListener {
         // Retrieve data and prepare it for the adapter
         productList = sharedPrefManager.getProductList()
         serisName = sharedPrefManager.getSeriesNames().toSet().toCollection(LinkedHashSet())
-        Toast.makeText(mContext, "gettinglistseries"+serisName.size, Toast.LENGTH_SHORT).show()
+       // Toast.makeText(mContext, "gettinglistseries"+serisName.size, Toast.LENGTH_SHORT).show()
 
         recyclerView = binding.recyclerViewAminData
         recyclerView.layoutManager = LinearLayoutManager(mContext)
@@ -93,9 +93,13 @@ class FragmentUser : Fragment(), CustomerAdapter.ProductListener {
         val colors = dialogView.findViewById<TextView>(R.id.Colorss)
         Rate = dialogView.findViewById<TextView>(R.id.getRate)
         val ratee = dialogView.findViewById<TextView>(R.id.ratee)
+        val productSeries = dialogView.findViewById<TextView>(R.id.productSeries)
 
-        sections.text = productModel.section
+        //sections.text = productModel.section
         colors.text = productModel.color
+        productSeries.text=productModel.series
+
+        sections.text=productModel.itemCode
 
         val adminRate = productModel.rate.toIntOrNull() ?: 0
 

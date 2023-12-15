@@ -6,7 +6,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -17,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.devZ.tagworks.Adapter.AdminAdapter
 import com.devZ.tagworks.Adapter.CustomerAdapter
+import com.devZ.tagworks.Constants
 import com.devZ.tagworks.Models.ProductModel
 import com.devZ.tagworks.Models.ProductViewModel
 import com.devZ.tagworks.R
@@ -25,7 +29,7 @@ import com.devZ.tagworks.Utils
 import com.devZ.tagworks.databinding.FragmentAdminBinding
 import kotlinx.coroutines.launch
 
-class AdminFragment : Fragment() {
+class AdminFragment : Fragment(), AdminAdapter.ProductEditListener {
     private lateinit var binding: FragmentAdminBinding
     private lateinit var utils: Utils
     private var productList = mutableListOf<ProductModel>()
@@ -36,6 +40,7 @@ class AdminFragment : Fragment() {
     private lateinit var adminAdapter: AdminAdapter
     private val splashDelayMillis = 2000 // 2 seconds
     private lateinit var serisName: LinkedHashSet<String>
+    private lateinit var constants: Constants
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,17 +50,18 @@ class AdminFragment : Fragment() {
         mContext = requireContext()
         utils = Utils(mContext)
         sharedPrefManager = SharedPrefManager(requireContext())
+        constants= Constants()
 
         binding.fabAdd.setOnClickListener {
             showSelectngDialog()
         }
         productList = sharedPrefManager.getProductList()
         serisName = sharedPrefManager.getSeriesNames().toSet().toCollection(LinkedHashSet())
-        Toast.makeText(mContext, "gettinglistseries"+serisName.size, Toast.LENGTH_SHORT).show()
+       // Toast.makeText(mContext, "gettinglistseries"+serisName.size, Toast.LENGTH_SHORT).show()
 
         recyclerView = binding.recyclerViewAminData
         recyclerView.layoutManager = LinearLayoutManager(mContext)
-        Toast.makeText(mContext, "product list"+productList.size, Toast.LENGTH_SHORT).show()
+       // Toast.makeText(mContext, "product list"+productList.size, Toast.LENGTH_SHORT).show()
 
         // Initialize an empty list to store series names and corresponding products
         val seriesAndProducts = mutableListOf<Any>()
@@ -73,7 +79,7 @@ class AdminFragment : Fragment() {
         }
 
         // Create and set the adapter with the updated data structure
-        adminAdapter = AdminAdapter(mContext, seriesAndProducts)
+        adminAdapter = AdminAdapter(mContext, seriesAndProducts, this@AdminFragment)
         recyclerView.adapter = adminAdapter
 
         utils.endLoadingAnimation()
@@ -92,65 +98,151 @@ class AdminFragment : Fragment() {
         val dialog = builder.create()
 
         aluminium.setOnClickListener {
-            showAddingDialog()
+            showAddingDialog(constants.ALUMINIUM)
             dialog.dismiss()
         }
 
         glass.setOnClickListener {
-            showAddingDialog()
+            showAddingDialog(constants.GLASS)
             dialog.dismiss()
         }
 
         dialog.show()
     }
-    private fun showAddingDialog() {
+    private fun showAddingDialog(type:String) {
         val builder = AlertDialog.Builder(requireContext())
         val dialogView = layoutInflater.inflate(R.layout.adding_dialogbox, null)
         builder.setView(dialogView)
+        val dialog = builder.create()
         val saveBtn = dialogView.findViewById<TextView>(R.id.savebtn)
 
-        saveBtn.setOnClickListener {
-            val section = dialogView.findViewById<EditText>(R.id.Sections).text.toString()
-            val colors = dialogView.findViewById<EditText>(R.id.Colors).text.toString()
-            val rate = dialogView.findViewById<EditText>(R.id.Price).text.toString()
-            val maxDiscount = dialogView.findViewById<EditText>(R.id.maxDiscount).text.toString()
-            val series = dialogView.findViewById<EditText>(R.id.series).text.toString()
+        val section = dialogView.findViewById<EditText>(R.id.Sections)
+        val rate = dialogView.findViewById<EditText>(R.id.Price)
+        val maxDiscount = dialogView.findViewById<EditText>(R.id.maxDiscount)
+        val itemCode = dialogView.findViewById<EditText>(R.id.itemCode)
+       // val itemSeries = dialogView.findViewById<EditText>(R.id.itemSeries)
 
-            // Create a ProductModel using the retrieved data
-            val product = ProductModel(
-                pid = "",
-                section = section,
-                color = colors,
-                rate = rate,
-                maxDiscount = maxDiscount,
-                "",
-                series =series
+        val items = listOf(constants.DULL,
+            constants.CH_RALL,
+            constants.SH_BR,
+            constants.MULTI,
+            constants.WOOD
+            )
+        var color=constants.DULL
 
-                )
+        val spinner = dialogView.findViewById<Spinner>(R.id.spinner)
+        val colorAdapter = ArrayAdapter(mContext, android.R.layout.simple_spinner_item, items)
+        colorAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = colorAdapter
 
-            productList.add(product)
-            saveProduct() // Moved saveProduct() inside the setOnClickListener block
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                color = items[position]
+
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+
+            }
         }
 
-        builder.setNegativeButton("", null)
-        val dialog = builder.create()
+        saveBtn.setOnClickListener {
+
+            val product = ProductModel(
+                "",
+                section.text.toString(),
+                color,
+                rate.text.toString(),
+                maxDiscount.text.toString(),
+                type,
+                section.text.toString(),
+                itemCode.text.toString()
+            )
+            dialog.dismiss()
+
+            saveProduct(product)
+
+        }
+
         dialog.show()
     }
 
-    private fun saveProduct() {
+    private fun saveProduct(productModel: ProductModel) {
         utils.startLoadingAnimation()
 
         lifecycleScope.launch {
             try {
-              //  Toast.makeText(context, "debug", Toast.LENGTH_SHORT).show()
-                for (product in productList) {
-                    productVieModel.saveProductToFirebase(product)
-                }
-                Toast.makeText(mContext, ""+productList.size, Toast.LENGTH_SHORT).show()
-
-            } catch (e: Exception) {
+                productVieModel.saveProductToFirebase(productModel)
+            }
+            catch (e: Exception) {
                 Toast.makeText(context, "Failed to save products: $e", Toast.LENGTH_SHORT).show()
-            } finally {
+            }
+            finally {
+                utils.endLoadingAnimation()
+            }
+        }
+    }
+
+    override fun selectedItemToEdit(productModel: ProductModel) {
+        dialogBoxToEdit(productModel)
+    }
+
+    private fun dialogBoxToEdit(productModel: ProductModel){
+        val builder = AlertDialog.Builder(requireContext())
+        val dialogView = layoutInflater.inflate(R.layout.edit_dialog_box, null)
+        builder.setView(dialogView)
+        val dialog = builder.create()
+        val updateBtn = dialogView.findViewById<TextView>(R.id.updateBtn)
+
+        val eSection = dialogView.findViewById<EditText>(R.id.eSection)
+        val eRate = dialogView.findViewById<EditText>(R.id.eRate)
+        val eDiscount = dialogView.findViewById<EditText>(R.id.eDiscount)
+        val eItemCode = dialogView.findViewById<EditText>(R.id.eItemCode)
+        val eColor = dialogView.findViewById<EditText>(R.id.eColor)
+
+        eSection.setText(productModel.section)
+        eRate.setText(productModel.rate)
+        eDiscount.setText(productModel.maxDiscount)
+        eItemCode.setText(productModel.itemCode)
+        eColor.setText(productModel.color)
+
+        updateBtn.setOnClickListener {
+
+            val product = ProductModel(
+                "",
+                eSection.text.toString(),
+                eColor.text.toString(),
+                eRate.text.toString(),
+                eDiscount.text.toString(),
+                productModel.type,
+                eSection.text.toString(),
+                eItemCode.text.toString()
+            )
+            dialog.dismiss()
+
+            updateProduct(product)
+
+        }
+
+        dialog.show()
+    }
+
+    private fun updateProduct(productModel: ProductModel) {
+        utils.startLoadingAnimation()
+
+        lifecycleScope.launch {
+            try {
+                productVieModel.updateProduct(productModel)
+            }
+            catch (e: Exception) {
+                Toast.makeText(context, "$e", Toast.LENGTH_SHORT).show()
+            }
+            finally {
                 utils.endLoadingAnimation()
             }
         }
