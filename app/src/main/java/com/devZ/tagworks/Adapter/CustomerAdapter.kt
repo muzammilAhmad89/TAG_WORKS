@@ -50,7 +50,6 @@ class CustomerAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = seriesAndProducts[position]
-        Toast.makeText(context, ""+seriesAndProducts.size, Toast.LENGTH_SHORT).show()
         when (holder) {
             is SeriesViewHolder -> {
                 val seriesName = item as String

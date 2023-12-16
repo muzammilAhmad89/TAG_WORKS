@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity() {
                 // Now, you can determine which fragment is opened by checking the position
                 when (position) {
                     0 -> {
-                        Toast.makeText(mContext, "0", Toast.LENGTH_SHORT).show()
                         // Fragment at position 0 is currently visible/opened
                         with(binding) {
                             cvCustomer.setBackgroundColor(resources.getColor(R.color.white, null))
@@ -48,7 +47,6 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
                     1 -> {
-                        Toast.makeText(mContext, "1", Toast.LENGTH_SHORT).show()
 
                         // Fragment at position 1 is currently visible/opened
                         binding.run {

@@ -44,12 +44,43 @@ class Repo(val context: Context) {
             }
     }
 
-    fun updateProduct(product: ProductModel){
-        PRODUCT_COLLECTION.document(product.pid).set(product)
+    fun updateProduct(updatedProduct: ProductModel) {
+        PRODUCT_COLLECTION.document(updatedProduct.pid).get()
+            .addOnCompleteListener { documentSnapshotTask ->
+                if (documentSnapshotTask.isSuccessful) {
+                    if (documentSnapshotTask.result?.exists() == true) {
+                        PRODUCT_COLLECTION.document(updatedProduct.pid).set(updatedProduct)
+                            .addOnCompleteListener { updateTask ->
+                                if (updateTask.isSuccessful) {
+                                    Toast.makeText(
+                                        context,
+                                        "Product updated successfully",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                } else {
+                                    Toast.makeText(
+                                        context,
+                                        "Update failed: ${updateTask.exception?.message}",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                    } else {
+                        Toast.makeText(context, "Document does not exist", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                } else {
+                    Toast.makeText(
+                        context,
+                        "Error checking document existence: ${documentSnapshotTask.exception?.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+            }
     }
 
-
-    suspend fun getproduct(): Task<QuerySnapshot> {
+        suspend fun getproduct(): Task<QuerySnapshot> {
         return PRODUCT_COLLECTION.get()
     }
 

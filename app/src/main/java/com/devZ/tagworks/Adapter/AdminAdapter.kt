@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.devZ.tagworks.Models.ProductModel
@@ -49,7 +48,6 @@ class AdminAdapter (
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = seriesAndProducts[position]
-        Toast.makeText(context, ""+seriesAndProducts.size, Toast.LENGTH_SHORT).show()
         when (holder) {
             is SeriesViewHolder -> {
                 val seriesName = item as String

@@ -21,12 +21,13 @@ import com.devZ.tagworks.SharedPrefManager
 import com.devZ.tagworks.Utils
 import com.devZ.tagworks.databinding.FragmentUserBinding
 
+
 class FragmentUser : Fragment(), CustomerAdapter.ProductListener {
     private lateinit var binding: FragmentUserBinding
     private lateinit var utils: Utils
 
     private lateinit var productList: List<ProductModel>
-    private lateinit var serisName: LinkedHashSet<String> // Declare serisName as LinkedHashSet
+    private lateinit var serisName: LinkedHashSet<String>
     private lateinit var mContext: Context
     private lateinit var recyclerView: RecyclerView
     private lateinit var customerAdapter: CustomerAdapter
@@ -42,39 +43,38 @@ class FragmentUser : Fragment(), CustomerAdapter.ProductListener {
         mContext = requireContext()
         utils = Utils(mContext)
         sharedPrefManager = SharedPrefManager(requireContext())
-        utils.startLoadingAnimation()
 
-        // Retrieve data and prepare it for the adapter
+        setupRecyclerView()
+
+        return view
+    }
+
+    private fun setupRecyclerView() {
+        utils.startLoadingAnimation()
         productList = sharedPrefManager.getProductList()
         serisName = sharedPrefManager.getSeriesNames().toSet().toCollection(LinkedHashSet())
-       // Toast.makeText(mContext, "gettinglistseries"+serisName.size, Toast.LENGTH_SHORT).show()
-
         recyclerView = binding.recyclerViewAminData
         recyclerView.layoutManager = LinearLayoutManager(mContext)
-        Toast.makeText(mContext, "product list"+productList.size, Toast.LENGTH_SHORT).show()
+        val seriesAndProducts = prepareSeriesAndProducts()
 
-        // Initialize an empty list to store series names and corresponding products
-        val seriesAndProducts = mutableListOf<Any>()
-
-        // Loop through each series name
-        for (seriesName in serisName) {
-            // Log the values for debugging
-            Log.d("SeriesComparison", "SeriesName: $seriesName")
-            val filteredProducts = productList.filter { it.series == seriesName }
-            Log.d("SeriesComparison", "FilteredProductsSize: ${filteredProducts.size}")
-
-            // Add series name followed by filtered products to the list
-            seriesAndProducts.add(seriesName)
-            seriesAndProducts.addAll(filteredProducts)
-        }
-
-        // Create and set the adapter with the updated data structure
         customerAdapter = CustomerAdapter(mContext, seriesAndProducts, this@FragmentUser)
         recyclerView.adapter = customerAdapter
 
         utils.endLoadingAnimation()
+    }
 
-        return view
+    private fun prepareSeriesAndProducts(): List<Any> {
+        val seriesAndProducts = mutableListOf<Any>()
+
+        for (seriesName in serisName) {
+            Log.d("SeriesComparison", "SeriesName: $seriesName")
+            val filteredProducts = productList.filter { it.series == seriesName }
+
+            seriesAndProducts.add(seriesName)
+            seriesAndProducts.addAll(filteredProducts)
+        }
+
+        return seriesAndProducts
     }
 
     override fun onProductClicked(productModel: ProductModel) {
@@ -88,28 +88,22 @@ class FragmentUser : Fragment(), CustomerAdapter.ProductListener {
 
         val sizeEditText = dialogView.findViewById<EditText>(R.id.size)
         val discountEditText = dialogView.findViewById<EditText>(R.id.discount)
-
         val sections = dialogView.findViewById<TextView>(R.id.Sectionss)
         val colors = dialogView.findViewById<TextView>(R.id.Colorss)
         Rate = dialogView.findViewById<TextView>(R.id.getRate)
         val ratee = dialogView.findViewById<TextView>(R.id.ratee)
         val productSeries = dialogView.findViewById<TextView>(R.id.productSeries)
 
-        //sections.text = productModel.section
         colors.text = productModel.color
-        productSeries.text=productModel.series
-
-        sections.text=productModel.itemCode
+        productSeries.text = productModel.series
+        sections.text = productModel.itemCode
 
         val adminRate = productModel.rate.toIntOrNull() ?: 0
-
         val dialog = builder.create()
 
         ratee.setOnClickListener {
-            // Get the values from the EditText fields when the button is clicked
             val sizeText = sizeEditText.text.toString()
             val discountText = discountEditText.text.toString()
-
             val sizeInt = sizeText.toIntOrNull() ?: 0
             val discountInt = discountText.toIntOrNull() ?: 0
 
@@ -127,3 +121,4 @@ class FragmentUser : Fragment(), CustomerAdapter.ProductListener {
         Rate.text = finalPrice.toString()
     }
 }
+

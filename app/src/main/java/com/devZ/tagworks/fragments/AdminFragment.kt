@@ -57,21 +57,13 @@ class AdminFragment : Fragment(), AdminAdapter.ProductEditListener {
         }
         productList = sharedPrefManager.getProductList()
         serisName = sharedPrefManager.getSeriesNames().toSet().toCollection(LinkedHashSet())
-       // Toast.makeText(mContext, "gettinglistseries"+serisName.size, Toast.LENGTH_SHORT).show()
-
         recyclerView = binding.recyclerViewAminData
         recyclerView.layoutManager = LinearLayoutManager(mContext)
-       // Toast.makeText(mContext, "product list"+productList.size, Toast.LENGTH_SHORT).show()
-
-        // Initialize an empty list to store series names and corresponding products
         val seriesAndProducts = mutableListOf<Any>()
 
         // Loop through each series name
         for (seriesName in serisName) {
-            // Log the values for debugging
-            Log.d("SeriesComparison", "SeriesName: $seriesName")
             val filteredProducts = productList.filter { it.series == seriesName }
-            Log.d("SeriesComparison", "FilteredProductsSize: ${filteredProducts.size}")
 
             // Add series name followed by filtered products to the list
             seriesAndProducts.add(seriesName)
@@ -214,7 +206,7 @@ class AdminFragment : Fragment(), AdminAdapter.ProductEditListener {
         updateBtn.setOnClickListener {
 
             val product = ProductModel(
-                "",
+                pid = productModel.pid,
                 eSection.text.toString(),
                 eColor.text.toString(),
                 eRate.text.toString(),
