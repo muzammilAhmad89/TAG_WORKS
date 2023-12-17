@@ -46,7 +46,7 @@
             android:editable="false"/>
 
         <TextView
-            android:id="@+id/Pdiscount"
+            android:id="@+id/pRate"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_weight="1"

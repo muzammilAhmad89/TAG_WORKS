@@ -15,11 +15,14 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.devZ.tagworks.Adapter.CustomerAdapter
+import com.devZ.tagworks.Constants
 import com.devZ.tagworks.Models.ProductModel
 import com.devZ.tagworks.R
 import com.devZ.tagworks.SharedPrefManager
 import com.devZ.tagworks.Utils
 import com.devZ.tagworks.databinding.FragmentUserBinding
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 
 class FragmentUser : Fragment(), CustomerAdapter.ProductListener {
@@ -34,6 +37,9 @@ class FragmentUser : Fragment(), CustomerAdapter.ProductListener {
     private lateinit var sharedPrefManager: SharedPrefManager
     private lateinit var Rate: TextView
 
+    private val db = Firebase.firestore
+    private lateinit var constants: Constants
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,9 +48,11 @@ class FragmentUser : Fragment(), CustomerAdapter.ProductListener {
         val view = binding.root
         mContext = requireContext()
         utils = Utils(mContext)
+        constants=Constants()
         sharedPrefManager = SharedPrefManager(requireContext())
 
         setupRecyclerView()
+        updateList()
 
         return view
     }
@@ -78,7 +86,12 @@ class FragmentUser : Fragment(), CustomerAdapter.ProductListener {
     }
 
     override fun onProductClicked(productModel: ProductModel) {
-        showRateDialog(productModel)
+
+        when (productModel.type) {
+            constants.ALUMINIUM -> showRateDialog(productModel)
+            constants.GLASS -> Toast.makeText(mContext, "Soon", Toast.LENGTH_SHORT).show()
+            else -> Toast.makeText(mContext, "Some thing went wrong", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun showRateDialog(productModel: ProductModel) {
@@ -119,6 +132,35 @@ class FragmentUser : Fragment(), CustomerAdapter.ProductListener {
         val discountPrice = initialPrice * (discount.toDouble() / 100.0)
         val finalPrice = initialPrice - discountPrice
         Rate.text = finalPrice.toString()
+    }
+
+    private fun updateList(){
+        val updatedList= ArrayList<ProductModel>()
+        val query = db.collection(constants.Product_COLLECTION)
+
+        query.addSnapshotListener { snapshot, firebaseFirestoreException ->
+            if (firebaseFirestoreException != null) {
+                // Handle any errors that occurred while listening to the snapshot
+                Toast.makeText(mContext, firebaseFirestoreException.message.toString(), Toast.LENGTH_SHORT).show()
+                return@addSnapshotListener
+            }
+
+            snapshot?.let { querySnapshot ->
+                updatedList.clear()
+
+                for (document in querySnapshot) {
+                    val product = document.toObject(ProductModel::class.java)
+                    updatedList.add(product)
+                }
+
+                sharedPrefManager.putProductList(updatedList)
+                // Extract series names from each product and store them in SharedPreferences
+                val seriesNames = updatedList.mapNotNull { it.series }
+                sharedPrefManager.putSeriesNames(seriesNames)
+
+                setupRecyclerView()
+            }
+        }
     }
 }
 

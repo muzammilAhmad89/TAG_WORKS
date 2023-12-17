@@ -22,7 +22,7 @@
         android:layout_marginBottom="20dp"
         >
         <TextView
-            android:id="@+id/customer"
+            android:id="@+id/aluminium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Aluminium"
@@ -33,7 +33,7 @@
             />
 
         <TextView
-            android:id="@+id/Admin"
+            android:id="@+id/glass"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Glass"

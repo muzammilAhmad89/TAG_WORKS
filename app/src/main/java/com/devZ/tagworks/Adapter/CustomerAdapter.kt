@@ -26,7 +26,7 @@ class CustomerAdapter(
     inner class ProductViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val section: TextView = itemView.findViewById(R.id.Psections)
         val colors: TextView = itemView.findViewById(R.id.Pcolors)
-        val discount: TextView = itemView.findViewById(R.id.Pdiscount)
+        val pRate: TextView = itemView.findViewById(R.id.pRate)
         val card: CardView = itemView.findViewById(R.id.rateCard)
     }
 
@@ -59,7 +59,7 @@ class CustomerAdapter(
                 val product = item as ProductModel
                 holder.section.text = product.itemCode
                 holder.colors.text = product.color
-                holder.discount.text = product.maxDiscount
+                holder.pRate.text = product.rate
 
                 // Set click listener for product item
                 holder.card.setOnClickListener { productListener.onProductClicked(product) }

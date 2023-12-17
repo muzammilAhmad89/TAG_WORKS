@@ -84,4 +84,14 @@ class Repo(val context: Context) {
         return PRODUCT_COLLECTION.get()
     }
 
+    suspend fun deleteProduct(product: ProductModel){
+        PRODUCT_COLLECTION.document(product.pid).delete().addOnSuccessListener {
+            Toast.makeText(context, "Product Deleted", Toast.LENGTH_SHORT).show()
+        }
+            .addOnFailureListener {
+                Toast.makeText(context, ""+it.message, Toast.LENGTH_SHORT).show()
+            }
+    }
+
+
 }

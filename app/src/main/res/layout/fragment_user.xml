@@ -75,7 +75,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:text="Discount"
+                        android:text="Rate"
                         android:textStyle="bold"
                         android:background="#00A3DC"
                         android:textColor="@color/white"/>

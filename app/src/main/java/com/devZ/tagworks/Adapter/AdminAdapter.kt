@@ -55,7 +55,7 @@ class AdminAdapter (
             }
             is ProductViewHolder -> {
                 val product = item as ProductModel
-                holder.section.text = product.section
+                holder.section.text = product.itemCode
                 holder.colors.text = product.color
                 holder.discount.text = product.maxDiscount
                 holder.rate.text = product.rate

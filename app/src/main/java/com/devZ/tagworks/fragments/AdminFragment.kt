@@ -8,7 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
@@ -27,6 +29,8 @@ import com.devZ.tagworks.R
 import com.devZ.tagworks.SharedPrefManager
 import com.devZ.tagworks.Utils
 import com.devZ.tagworks.databinding.FragmentAdminBinding
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
 class AdminFragment : Fragment(), AdminAdapter.ProductEditListener {
@@ -41,6 +45,8 @@ class AdminFragment : Fragment(), AdminAdapter.ProductEditListener {
     private val splashDelayMillis = 2000 // 2 seconds
     private lateinit var serisName: LinkedHashSet<String>
     private lateinit var constants: Constants
+    private val db = Firebase.firestore
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,6 +61,22 @@ class AdminFragment : Fragment(), AdminAdapter.ProductEditListener {
         binding.fabAdd.setOnClickListener {
             showSelectngDialog()
         }
+
+        setUpRecyclerView()
+        updateList()
+
+
+        utils.endLoadingAnimation()
+
+        return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateList()
+    }
+
+    fun setUpRecyclerView(){
         productList = sharedPrefManager.getProductList()
         serisName = sharedPrefManager.getSeriesNames().toSet().toCollection(LinkedHashSet())
         recyclerView = binding.recyclerViewAminData
@@ -73,10 +95,39 @@ class AdminFragment : Fragment(), AdminAdapter.ProductEditListener {
         // Create and set the adapter with the updated data structure
         adminAdapter = AdminAdapter(mContext, seriesAndProducts, this@AdminFragment)
         recyclerView.adapter = adminAdapter
+    }
 
-        utils.endLoadingAnimation()
+    private fun updateList() {
+        val updatedList = ArrayList<ProductModel>()
+        val query = db.collection(constants.Product_COLLECTION)
 
-        return view
+        query.addSnapshotListener { snapshot, firebaseFirestoreException ->
+            if (firebaseFirestoreException != null) {
+                // Handle any errors that occurred while listening to the snapshot
+                Toast.makeText(
+                    mContext,
+                    firebaseFirestoreException.message.toString(),
+                    Toast.LENGTH_SHORT
+                ).show()
+                return@addSnapshotListener
+            }
+
+            snapshot?.let { querySnapshot ->
+                updatedList.clear()
+
+                for (document in querySnapshot) {
+                    val product = document.toObject(ProductModel::class.java)
+                    updatedList.add(product)
+                }
+
+                sharedPrefManager.putProductList(updatedList)
+                // Extract series names from each product and store them in SharedPreferences
+                val seriesNames = updatedList.mapNotNull { it.series }
+                sharedPrefManager.putSeriesNames(seriesNames)
+
+                setUpRecyclerView()
+            }
+        }
     }
 
     private fun showSelectngDialog() {
@@ -84,8 +135,8 @@ class AdminFragment : Fragment(), AdminAdapter.ProductEditListener {
         val dialogView = layoutInflater.inflate(R.layout.selectingmodule, null)
         builder.setView(dialogView)
 
-        val aluminium = dialogView.findViewById<TextView>(R.id.Admin)
-        val glass = dialogView.findViewById<TextView>(R.id.customer)
+        val aluminium = dialogView.findViewById<TextView>(R.id.aluminium)
+        val glass = dialogView.findViewById<TextView>(R.id.glass)
 
         val dialog = builder.create()
 
@@ -196,12 +247,21 @@ class AdminFragment : Fragment(), AdminAdapter.ProductEditListener {
         val eDiscount = dialogView.findViewById<EditText>(R.id.eDiscount)
         val eItemCode = dialogView.findViewById<EditText>(R.id.eItemCode)
         val eColor = dialogView.findViewById<EditText>(R.id.eColor)
+        val close=dialogView.findViewById<ImageView>(R.id.close)
+        val delete=dialogView.findViewById<Button>(R.id.deleteBtn)
 
         eSection.setText(productModel.section)
         eRate.setText(productModel.rate)
         eDiscount.setText(productModel.maxDiscount)
         eItemCode.setText(productModel.itemCode)
         eColor.setText(productModel.color)
+
+        close.setOnClickListener {dialog.dismiss()}
+
+        delete.setOnClickListener {
+            lifecycleScope.launch { productVieModel.deleteProduct(productModel) }
+            dialog.dismiss()
+        }
 
         updateBtn.setOnClickListener {
 

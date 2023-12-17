@@ -23,4 +23,8 @@ class ProductViewModel(context: Application) : AndroidViewModel(context) {
     suspend fun updateProduct(product: ProductModel){
         return repo.updateProduct(product)
     }
+
+    suspend fun deleteProduct(productModel: ProductModel){
+        repo.deleteProduct(productModel)
+    }
 }
